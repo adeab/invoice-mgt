@@ -91,11 +91,12 @@ function getInvoiceId() {
 	    die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 	}
 
-	$query = "SELECT invoice FROM invoices ORDER BY invoice DESC LIMIT 1";
+	$query = "SELECT invoice FROM invoices ORDER BY CAST(invoice AS UNSIGNED) DESC LIMIT 1";
 
 	if ($result = $mysqli->query($query)) {
 
 		$row_cnt = $result->num_rows;
+
 
 	    $row = mysqli_fetch_assoc($result);
 

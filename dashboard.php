@@ -3,7 +3,7 @@
 *  Invoice Management System                                                *
 *                                                                              *
 * Version: 1.0	                                                               *
-* Developer:  Abhishek Raj                                   				           *
+* Developer:  Abhishek Raj, Rafaeatul Kabir                  				           *
 *******************************************************************************/
 
 include('header.php');
@@ -30,7 +30,7 @@ include_once("includes/config.php");
               <p>Sales Amount</p>
             </div>
             <div class="icon">
-              <i class="ion ion-social-usd"></i>
+              <i class="ion ion-ios-calculator"></i>
             </div>
             
           </div>
