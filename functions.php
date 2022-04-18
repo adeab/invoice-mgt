@@ -235,20 +235,35 @@ function getProducts() {
 				<th>Product</th>
 				<th>Description</th>
 				<th>Price</th>
+				<th>Qty</th>
 				<th>Action</th>
 
 			  </tr></thead><tbody>';
 
 		while($row = $results->fetch_assoc()) {
 
-		    print '
-			    <tr>
-					<td>'.$row["product_name"].'</td>
-				    <td>'.$row["product_desc"].'</td>
-				    <td>$'.$row["product_price"].'</td>
-				    <td><a href="product-edit.php?id='.$row["product_id"].'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> <a data-product-id="'.$row['product_id'].'" class="btn btn-danger btn-xs delete-product"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
-			    </tr>
-		    ';
+			if($row['product_qty']){
+				print '
+					<tr>
+						<td>'.$row["product_name"].'</td>
+						<td>'.$row["product_desc"].'</td>
+						<td>Tk. '.$row["product_price"].'</td>
+				   <td>'.$row["product_qty"].'</td>
+						<td><a href="product-edit.php?id='.$row["product_id"].'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> <a data-product-id="'.$row['product_id'].'" class="btn btn-danger btn-xs delete-product"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+					</tr>
+				';}
+				else{
+					print '
+					<tr>
+						<td>'.$row["product_name"].'</td>
+						<td>'.$row["product_desc"].'</td>
+						<td>Tk. '.$row["product_price"].'</td>
+						<td>Unlimited</td>
+						<td><a href="product-edit.php?id='.$row["product_id"].'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> <a data-product-id="'.$row['product_id'].'" class="btn btn-danger btn-xs delete-product"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+					</tr>
+				';  
+				}
+	
 		}
 
 		print '</tr></tbody></table>';

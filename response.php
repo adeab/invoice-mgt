@@ -570,12 +570,14 @@ if($action == 'update_product') {
 	$product_name = $_POST['product_name']; // product name
 	$product_desc = $_POST['product_desc']; // product desc
 	$product_price = $_POST['product_price']; // product price
+	$product_qty = $_POST['product_qty']; //product quantity
 
 	// the query
 	$query = "UPDATE products SET
 				product_name = ?,
 				product_desc = ?,
-				product_price = ?
+				product_price = ?,
+				product_qty = ?
 			 WHERE product_id = ?
 			";
 
@@ -587,8 +589,8 @@ if($action == 'update_product') {
 
 	/* Bind parameters. TYpes: s = string, i = integer, d = double,  b = blob */
 	$stmt->bind_param(
-		'ssss',
-		$product_name,$product_desc,$product_price,$getID
+		'sssis',
+		$product_name,$product_desc,$product_price,$product_qty,$getID
 	);
 
 	//execute the query
@@ -945,18 +947,21 @@ if($action == 'add_product') {
 	$product_name = $_POST['product_name'];
 	$product_desc = $_POST['product_desc'];
 	$product_price = $_POST['product_price'];
+	$product_qty = $_POST['product_qty'];
 
 	//our insert query query
 	$query  = "INSERT INTO products
 				(
 					product_name,
 					product_desc,
-					product_price
+					product_price,
+					product_qty
 				)
 				VALUES (
 					?, 
                 	?,
-                	?
+                	?,
+					?
                 );
               ";
 
@@ -969,7 +974,7 @@ if($action == 'add_product') {
 	}
 
 	/* Bind parameters. TYpes: s = string, i = integer, d = double,  b = blob */
-	$stmt->bind_param('sss',$product_name,$product_desc,$product_price);
+	$stmt->bind_param('sssi',$product_name,$product_desc,$product_price,$product_qty);
 
 	if($stmt->execute()){
 	    //if saving success

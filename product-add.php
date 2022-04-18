@@ -22,13 +22,17 @@ include('header.php');
 					<input type="hidden" name="action" value="add_product">
 
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input type="text" class="form-control required" name="product_name" placeholder="Enter Product Name">
 						</div>
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input type="text" class="form-control required" name="product_desc" placeholder="Enter Product Description">
 						</div>
-						<div class="col-xs-4">
+						<div class="col-xs-3">
+							<input type="number" class="form-control" name="product_qty" placeholder="Enter Product Quantity">
+							<small class="note-small">Keep it empty for unlimited!</small>
+						</div>
+						<div class="col-xs-3">
 							<div class="input-group">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
 								<input type="number" name="product_price" class="form-control required" placeholder="0.00" aria-describedby="sizing-addon1">

@@ -3,6 +3,7 @@
 *                                                                              *
 * Version: 1.0                                                               *
 * Author: Abhishek Raj                                   				   *
+* Modified By: Rafaeatul Kabir                                   				   *
 *******************************************************************************/
 
 body {
@@ -167,4 +168,10 @@ strong.shipping {
 
 .login-form {
   margin-top: 100px;
+}
+.note-small{
+  color: grey;
+  font-style: italic;
+  font-weight: 600;
+  padding: 0.5rem;
 }

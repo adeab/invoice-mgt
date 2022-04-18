@@ -25,6 +25,7 @@ if($result) {
 		$product_name = $row['product_name']; // product name
 		$product_desc = $row['product_desc']; // product description
 		$product_price = $row['product_price']; // product price
+		$product_qty = $row['product_qty']; //product quantity
 	}
 }
 
@@ -52,13 +53,17 @@ $mysqli->close();
 					<input type="hidden" name="action" value="update_product">
 					<input type="hidden" name="id" value="<?php echo $getID; ?>">
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input type="text" class="form-control required" name="product_name" placeholder="Enter product name" value="<?php echo $product_name; ?>">
 						</div>
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input type="text" class="form-control required" name="product_desc" placeholder="Enter product description" value="<?php echo $product_desc; ?>">
 						</div>
-						<div class="col-xs-4">
+						<div class="col-xs-3">
+							<input type="number" class="form-control" name="product_qty" placeholder="Enter Product Quantity" value="<?php echo $product_qty; ?>">
+							<small class="note-small">Keep it empty for unlimited!</small>
+						</div>
+						<div class="col-xs-3">
 							<div class="input-group">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
 								<input type="text" name="product_price" class="form-control required" placeholder="0.00" aria-describedby="sizing-addon1" value="<?php echo $product_price; ?>">

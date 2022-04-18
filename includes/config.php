@@ -4,9 +4,9 @@ ini_set('error_reporting', E_ALL);
 
 // DATABASE INFORMATION
 define('DATABASE_HOST', getenv('http://nayon.taqitizar.com'));
-define('DATABASE_NAME', 'hwbnezmy_nayonivn');
-define('DATABASE_USER', 'hwbnezmy_nayon12');
-define('DATABASE_PASS', 'Nayon@123456#');
+define('DATABASE_NAME', 'invoicemgsys');
+define('DATABASE_USER', 'root');
+define('DATABASE_PASS', '');
 
 // COMPANY INFORMATION
 define('COMPANY_LOGO', 'images/logo.png');
