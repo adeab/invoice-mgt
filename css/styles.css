@@ -175,3 +175,6 @@ strong.shipping {
   font-weight: 600;
   padding: 0.5rem;
 }
+.invoice-success-btn{
+  margin-right: 1rem;
+}

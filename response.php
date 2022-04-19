@@ -211,6 +211,10 @@ if ($action == 'create_customer'){
 
 // Create invoice
 if ($action == 'create_invoice'){
+	$invoice_number = $_POST['invoice_id'];
+	$query = "SELECT * FROM `invoices` WHERE invoice='$invoice_number'";
+	$results = mysqli_query($mysqli,$query);
+	$count = mysqli_num_rows($results);
 
 	// invoice customer information
 	// billing
@@ -347,7 +351,8 @@ if ($action == 'create_invoice'){
 		//if saving success
 		echo json_encode(array(
 			'status' => 'Success',
-			'message' => 'Invoice has been created successfully!'
+			'message' => 'Invoice has been created successfully!',
+			'number' => $invoice_number
 		));
 
 		//Set default date timezone

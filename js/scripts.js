@@ -494,16 +494,25 @@ $(document).ready(function() {
 				dataType: 'json',
 				success: function(data){
 					$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
-					$("#response").removeClass("alert-warning").addClass("alert-success").fadeIn();
+					$("#response").removeClass("alert-success").addClass("alert-warning").fadeIn();
 					$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
-					$("#create_invoice").before().html("<a href='../invoice-add.php' class='btn btn-primary'>Create new invoice</a>");
-					$("#create_invoice").remove();
 					$btn.button("reset");
 				},
 				error: function(data){
-					$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
-					$("#response").removeClass("alert-success").addClass("alert-warning").fadeIn();
-					$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+					if(data.status==200){
+						var processed_data = data.responseText.substr(0, data.responseText.indexOf('}')+1);
+						var json_processed_data = JSON.parse(processed_data);
+						$("#response .message").html("<strong>Success</strong>: Invoice created successfully!");
+						$("#response").removeClass("alert-warning").addClass("alert-success").fadeIn();
+						$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+						$("#create_invoice").before().html("<a href='../invoice-create.php' class='btn btn-primary invoice-success-btn'>Create new invoice</a><a target='_blank' href='../invoices/"+json_processed_data.number+".pdf' class='btn btn-success invoice-success-btn'>Print invoice</a>");
+						
+					}
+					else{
+						$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
+						$("#response").removeClass("alert-success").addClass("alert-warning").fadeIn();
+						$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+					}
 					$btn.button("reset");
 				} 
 
