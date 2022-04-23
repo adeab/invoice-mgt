@@ -696,7 +696,6 @@ if($action == 'update_invoice') {
 	// insert customer details into database
 	$query .= "INSERT INTO customers (
 					invoice,
-					custom_email,
 					name,
 					email,
 					address_1,
@@ -713,7 +712,6 @@ if($action == 'update_invoice') {
 					postcode_ship
 				) VALUES (
 					'".$invoice_number."',
-					'".$custom_email."',
 					'".$customer_name."',
 					'".$customer_email."',
 					'".$customer_address_1."',
