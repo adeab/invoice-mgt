@@ -281,8 +281,12 @@ $(document).ready(function() {
 
 	function updateTotals(elem) {
 
-        var tr = $(elem).closest('tr'),
-            quantity = $('[name="invoice_product_qty[]"]', tr).val(),
+        var tr = $(elem).closest('tr');
+        if(Object.keys(tr).length>4)
+		{
+			tr.splice(0, Object.keys(tr).length-4);
+		}
+		var quantity = $('[name="invoice_product_qty[]"]', tr).val(),
 	        price = $('[name="invoice_product_price[]"]', tr).val(),
             isPercent = $('[name="invoice_product_discount[]"]', tr).val().indexOf('%') > -1,
             percent = $.trim($('[name="invoice_product_discount[]"]', tr).val().replace('%', '')),
@@ -310,12 +314,14 @@ $(document).ready(function() {
 	    $('#invoice_table tbody tr').each(function() {
             var c_sbt = $('.calculate-sub', this).val(),
                 quantity = $('[name="invoice_product_qty[]"]', this).val(),
-	            price = $('[name="invoice_product_price[]"]', this).val() || 0,
+				price = $('[name="invoice_product_price[]"]', this).val() || 0,
                 subtotal = parseInt(quantity) * parseFloat(price);
             
             grandTotal += parseFloat(c_sbt);
             disc += subtotal - parseFloat(c_sbt);
+	            
 	    });
+		
 
         // VAT, DISCOUNT, SHIPPING, TOTAL, SUBTOTAL:
 	    var subT = parseFloat(grandTotal),
@@ -725,19 +731,44 @@ $(document).ready(function() {
         	url: 'response.php',
             type: 'POST', 
             data: $("#update_invoice").serialize(),
-            dataType: 'json', 
-            success: function(data){
-				$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
-				$("#response").removeClass("alert-warning").addClass("alert-success").fadeIn();
-				$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
-				$btn.button("reset");
-			},
-			error: function(data){
+            dataType: 'json',
+			success: function(data){
 				$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
 				$("#response").removeClass("alert-success").addClass("alert-warning").fadeIn();
 				$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
 				$btn.button("reset");
+			},
+			error: function(data){
+				
+				var processed_data = data.responseText.substr(0, data.responseText.indexOf('}')+1);
+				var json_processed_data = JSON.parse(processed_data);
+				if(json_processed_data.status == "Success"){
+					console.log("final query= ", json_processed_data.query);
+					$("#response .message").html("<strong>Success</strong>: Invoice created successfully!");
+					$("#response").removeClass("alert-warning").addClass("alert-success").fadeIn();
+					$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+					$("#create_invoice").before().html("<a href='../invoice-create.php' class='btn btn-primary invoice-success-btn'>Create new invoice</a><a target='_blank' href='../invoices/"+json_processed_data.number+".pdf' class='btn btn-success invoice-success-btn'>Print invoice</a>");
+					
+				}
+				else{
+					$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
+					$("#response").removeClass("alert-success").addClass("alert-warning").fadeIn();
+					$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+				}
+				$btn.button("reset");
 			} 
+            // success: function(data){
+			// 	$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
+			// 	$("#response").removeClass("alert-warning").addClass("alert-success").fadeIn();
+			// 	$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+			// 	$btn.button("reset");
+			// },
+			// error: function(data){
+			// 	$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
+			// 	$("#response").removeClass("alert-success").addClass("alert-warning").fadeIn();
+			// 	$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+			// 	$btn.button("reset");
+			// } 
     	});
 
    	}

@@ -211,11 +211,6 @@ if ($action == 'create_customer'){
 
 // Create invoice
 if ($action == 'create_invoice'){
-	$invoice_number = $_POST['invoice_id'];
-	$query = "SELECT * FROM `invoices` WHERE invoice='$invoice_number'";
-	$results = mysqli_query($mysqli,$query);
-	$count = mysqli_num_rows($results);
-
 	// invoice customer information
 	// billing
 	$customer_name = $_POST['customer_name']; // customer name
@@ -701,7 +696,6 @@ if($action == 'update_invoice') {
 	// insert customer details into database
 	$query .= "INSERT INTO customers (
 					invoice,
-					custom_email,
 					name,
 					email,
 					address_1,
@@ -718,7 +712,6 @@ if($action == 'update_invoice') {
 					postcode_ship
 				) VALUES (
 					'".$invoice_number."',
-					'".$custom_email."',
 					'".$customer_name."',
 					'".$customer_email."',
 					'".$customer_address_1."',
@@ -771,7 +764,8 @@ if($action == 'update_invoice') {
 	    //if saving success
 		echo json_encode(array(
 			'status' => 'Success',
-			'message'=> 'Product has been updated successfully!'
+			'message'=> 'Invoice has been updated successfully!',
+			'query' => $query
 		));
 
 		//Set default date timezone
