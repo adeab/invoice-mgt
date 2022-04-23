@@ -740,10 +740,9 @@ $(document).ready(function() {
 			},
 			error: function(data){
 				
-				var processed_data = data.responseText.substr(0, data.responseText.indexOf('}')+1);
-				var json_processed_data = JSON.parse(processed_data);
+					var processed_data = data.responseText.substr(0, data.responseText.indexOf('}')+1);
+					var json_processed_data = JSON.parse(processed_data);
 				if(json_processed_data.status == "Success"){
-					console.log("final query= ", json_processed_data.query);
 					$("#response .message").html("<strong>Success</strong>: Invoice created successfully!");
 					$("#response").removeClass("alert-warning").addClass("alert-success").fadeIn();
 					$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);

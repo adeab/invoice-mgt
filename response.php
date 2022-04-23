@@ -211,6 +211,7 @@ if ($action == 'create_customer'){
 
 // Create invoice
 if ($action == 'create_invoice'){
+
 	// invoice customer information
 	// billing
 	$customer_name = $_POST['customer_name']; // customer name
@@ -346,8 +347,7 @@ if ($action == 'create_invoice'){
 		//if saving success
 		echo json_encode(array(
 			'status' => 'Success',
-			'message' => 'Invoice has been created successfully!',
-			'number' => $invoice_number
+			'message' => 'Invoice has been created successfully!'
 		));
 
 		//Set default date timezone
@@ -628,7 +628,7 @@ if($action == 'update_invoice') {
 
 	// the query
 	$query = "DELETE FROM invoices WHERE invoice = ".$id.";";
-	//$query .= "DELETE FROM customers WHERE invoice = ".$id.";";
+	$query .= "DELETE FROM customers WHERE invoice = ".$id.";";
 	$query .= "DELETE FROM invoice_items WHERE invoice = ".$id.";";
 
 	unlink('invoices/'.$id.'.pdf');
@@ -696,6 +696,7 @@ if($action == 'update_invoice') {
 	// insert customer details into database
 	$query .= "INSERT INTO customers (
 					invoice,
+					custom_email,
 					name,
 					email,
 					address_1,
@@ -712,6 +713,7 @@ if($action == 'update_invoice') {
 					postcode_ship
 				) VALUES (
 					'".$invoice_number."',
+					'".$custom_email."',
 					'".$customer_name."',
 					'".$customer_email."',
 					'".$customer_address_1."',
@@ -764,8 +766,7 @@ if($action == 'update_invoice') {
 	    //if saving success
 		echo json_encode(array(
 			'status' => 'Success',
-			'message'=> 'Invoice has been updated successfully!',
-			'query' => $query
+			'message'=> 'Product has been updated successfully!'
 		));
 
 		//Set default date timezone
