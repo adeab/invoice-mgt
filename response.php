@@ -946,19 +946,26 @@ if($action == 'add_product') {
 	$product_desc = $_POST['product_desc'];
 	$product_price = $_POST['product_price'];
 	$product_qty = $_POST['product_qty'];
+	$product_original_price = $_POST['product_price_org'];
+	$product_sku = $_POST['product_sku'];
 
 	//our insert query query
 	$query  = "INSERT INTO products
 				(
+					product_sku,
 					product_name,
 					product_desc,
 					product_price,
+					product_original_price,
 					product_qty
+
 				)
 				VALUES (
+					?,
 					?, 
                 	?,
                 	?,
+					?,
 					?
                 );
               ";
@@ -972,7 +979,7 @@ if($action == 'add_product') {
 	}
 
 	/* Bind parameters. TYpes: s = string, i = integer, d = double,  b = blob */
-	$stmt->bind_param('sssi',$product_name,$product_desc,$product_price,$product_qty);
+	$stmt->bind_param('sssssi',$product_sku, $product_name,$product_desc,$product_price,$product_original_price,$product_qty);
 
 	if($stmt->execute()){
 	    //if saving success
