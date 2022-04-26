@@ -168,6 +168,29 @@ $(document).ready(function() {
    		return false;
 
    	});
+	$(document).on('click', ".item-select", function(e) {
+		console.log("Here click");
+		
+		
+		var product = $(this);
+		$('#insert').modal({ backdrop: 'static', keyboard: false }).one('click', '.product-select', function(e) {
+			console.log("asdasd");
+			var product_name = $(this).attr('data-product-name');
+			var product_qty = $(this).attr('data-product-qty');
+			var product_price = $(this).attr('data-product-price');
+			var product_original_price = $(this).attr('data-product-original-price');
+			$(product).closest('tr').find('.invoice_product').val(product_name);
+			$(product).closest('tr').find('.invoice_product_price').val(product_price);
+			$(product).closest('tr').find('.price_org').val(product_original_price);
+
+			updateTotals('.calculate');
+			calculateTotal();
+		$('#insert').modal('hide');
+		});
+
+		return false;
+
+   	});
 
    	$(document).on('click', ".select-customer", function(e) {
 

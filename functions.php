@@ -135,12 +135,38 @@ function popProductsList() {
 	$results = $mysqli->query($query);
 
 	if($results) {
-		echo '<select class="form-control item-select">';
+		// echo '<select class="form-control item-select">';
+		// while($row = $results->fetch_assoc()) {
+
+		//     print '<option value="'.$row['product_price'].'">'.$row["product_name"].' - '.$row["product_desc"].'</option>';
+		// }
+		// echo '</select>';
+		print '<table class="table table-striped table-hover table-bordered" id="data-table"><thead><tr>
+
+				<th>Name</th>
+				<th>SKU</th>
+				<th>Description</th>
+				<th>Price</th>
+				<th>Qty</th>
+				<th>Action</th>
+
+			  </tr></thead><tbody>';
+
 		while($row = $results->fetch_assoc()) {
 
-		    print '<option value="'.$row['product_price'].'">'.$row["product_name"].' - '.$row["product_desc"].'</option>';
+		    print '
+			    <tr>
+					<td>'.$row["product_name"].'</td>
+				    <td>'.$row["product_sku"].'</td>
+				    <td>'.$row["product_desc"].'</td>
+				    <td>'.$row["product_price"].'</td>
+				    <td>'.$row["product_qty"].'</td>
+				    <td><a href="#" class="btn btn-primary btn-xs product-select" data-product-name="'.$row['product_name'].'" data-product-sku="'.$row['product_sku'].'" data-product-qty="'.$row['product_qty'].'" data-product-price="'.$row['product_price'].'" data-product-desc="'.$row['product_desc'].'" data-product-original-price="'.$row['product_original_price'].'">Select</a></td>
+			    </tr>
+		    ';
 		}
-		echo '</select>';
+
+		print '</tr></tbody></table>';
 
 	} else {
 

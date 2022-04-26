@@ -173,14 +173,17 @@ include('functions.php');
 							</div>
 						</td>
 						<td class="text-right">
-							<div class="form-group form-group-sm no-margin-bottom">
-								<input type="number" class="form-control invoice_product_qty calculate" name="invoice_product_qty[]" value="1">
+							<div class="form-group form-group-sm no-margin-bottom input-group">
+								<input type="number" class="form-control invoice_product_qty calculate" name="invoice_product_qty[]" value="1" aria-describedby="basic-addon2">
+								<span class="input-group-addon" id="basic-addon2" name="total_qty[]">of 23</span>
+								
 							</div>
 						</td>
 						<td class="text-right">
 							<div class="input-group input-group-sm  no-margin-bottom">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
 								<input type="number" class="form-control calculate invoice_product_price required" name="invoice_product_price[]" aria-describedby="sizing-addon1" placeholder="0.00">
+								<input type="number" class="form-control calculate price_org" name="price_org[]" placeholder="original">
 							</div>
 						</td>
 						<td class="text-right">
@@ -192,6 +195,7 @@ include('functions.php');
 							<div class="input-group input-group-sm">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
 								<input type="text" class="form-control calculate-sub" name="invoice_product_sub[]" id="invoice_product_sub" value="0.00" aria-describedby="sizing-addon1" disabled>
+								<input type="text" class="form-control calculate-sub-profit" name="sub_profit[]" id="sub_profit" placeholder="Porfit Total" disabled>
 							</div>
 						</td>
 					</tr>
@@ -286,7 +290,7 @@ include('functions.php');
 				<?php popProductsList(); ?>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" data-dismiss="modal" class="btn btn-primary" id="selected">Add</button>
+		        <!-- <button type="button" data-dismiss="modal" class="btn btn-primary" id="selected">Add</button> -->
 				<button type="button" data-dismiss="modal" class="btn">Cancel</button>
 		      </div>
 		    </div><!-- /.modal-content -->

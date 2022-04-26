@@ -371,7 +371,7 @@ $mysqli->close();
 				<?php popProductsList(); ?>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" data-dismiss="modal" class="btn btn-primary" id="selected">Add</button>
+		        <!-- <button type="button" data-dismiss="modal" class="btn btn-primary" id="selected">Add</button> -->
 				<button type="button" data-dismiss="modal" class="btn">Cancel</button>
 		      </div>
 		    </div><!-- /.modal-content -->

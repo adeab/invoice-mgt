@@ -945,7 +945,7 @@ if($action == 'add_product') {
 	$product_name = $_POST['product_name'];
 	$product_desc = $_POST['product_desc'];
 	$product_price = $_POST['product_price'];
-	$product_qty = $_POST['product_qty'];
+	$product_qty = $_POST['product_qty']>0?$_POST['product_qty']:null;
 	$product_original_price = $_POST['product_price_org'];
 	$product_sku = $_POST['product_sku'];
 
