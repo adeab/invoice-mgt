@@ -80,6 +80,7 @@
             </a>
             <ul class="dropdown-menu">
              <!-- Drop down list-->
+              <li><a href="password-change.php" class="btn btn-default btn-flat">Change Password</a></li>
               <li><a href="logout.php" class="btn btn-default btn-flat">Log out</a></li>
             </ul>
           </li>

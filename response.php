@@ -237,6 +237,7 @@ if ($action == 'create_invoice'){
 	$invoice_date = $_POST['invoice_date']; // invoice date
 	$custom_email = $_POST['custom_email']; // custom invoice email
 	$invoice_due_date = $_POST['invoice_due_date']; // invoice due date
+	$invoice_total_profit = $_POST['invoice_profit_total'];
 	$invoice_subtotal = $_POST['invoice_subtotal']; // invoice sub-total
 	$invoice_shipping = $_POST['invoice_shipping']; // invoice shipping amount
 	$invoice_discount = $_POST['invoice_discount']; // invoice discount
@@ -252,7 +253,8 @@ if ($action == 'create_invoice'){
 					custom_email,
 					invoice_date, 
 					invoice_due_date, 
-					subtotal, 
+					subtotal,
+					totalprofit, 
 					shipping, 
 					discount, 
 					vat, 
@@ -266,6 +268,7 @@ if ($action == 'create_invoice'){
 				  	'".$invoice_date."',
 				  	'".$invoice_due_date."',
 				  	'".$invoice_subtotal."',
+				  	'".$invoice_total_profit."',
 				  	'".$invoice_shipping."',
 				  	'".$invoice_discount."',
 				  	'".$invoice_vat."',
@@ -347,7 +350,8 @@ if ($action == 'create_invoice'){
 		//if saving success
 		echo json_encode(array(
 			'status' => 'Success',
-			'message' => 'Invoice has been created successfully!'
+			'message' => 'Invoice has been created successfully!',
+			'number' => $invoice_number
 		));
 
 		//Set default date timezone

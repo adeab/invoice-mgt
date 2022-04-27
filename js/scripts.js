@@ -169,12 +169,8 @@ $(document).ready(function() {
 
    	});
 	$(document).on('click', ".item-select", function(e) {
-		console.log("Here click");
-		
-		
 		var product = $(this);
 		$('#insert').modal({ backdrop: 'static', keyboard: false }).one('click', '.product-select', function(e) {
-			console.log("asdasd");
 			var product_name = $(this).attr('data-product-name');
 			var product_qty = $(this).attr('data-product-qty');
 			var product_price = $(this).attr('data-product-price');
@@ -182,6 +178,8 @@ $(document).ready(function() {
 			$(product).closest('tr').find('.invoice_product').val(product_name);
 			$(product).closest('tr').find('.invoice_product_price').val(product_price);
 			$(product).closest('tr').find('.price_org').val(product_original_price);
+			
+			$(product).closest('tr').find('.total_qty').text(product_qty?product_qty:"Unlimited");
 
 			updateTotals('.calculate');
 			calculateTotal();
@@ -288,6 +286,7 @@ $(document).ready(function() {
     $('#invoice_table').on('input', '.calculate', function () {
 	    updateTotals(this);
 	    calculateTotal();
+		checkQuantity(this);
 	});
 
 	$('#invoice_totals').on('input', '.calculate', function () {
@@ -301,7 +300,20 @@ $(document).ready(function() {
 	$('.remove_vat').on('change', function() {
         calculateTotal();
     });
-
+	function checkQuantity(elem){
+		var tr = $(elem).closest('tr');
+        if(Object.keys(tr).length>4)
+		{
+			tr.splice(0, Object.keys(tr).length-4);
+		}
+		var quantity = $('[name="invoice_product_qty[]"]', tr).val(),
+			total_qty = $('[name="total_qty[]"]', tr).text();
+		
+		if (total_qty!="Unlimited" && parseInt(quantity)>parseInt(total_qty))
+		{
+			$('[name="invoice_product_qty[]"]', tr).val(total_qty);
+		}
+	}
 	function updateTotals(elem) {
 
         var tr = $(elem).closest('tr');
@@ -311,6 +323,7 @@ $(document).ready(function() {
 		}
 		var quantity = $('[name="invoice_product_qty[]"]', tr).val(),
 	        price = $('[name="invoice_product_price[]"]', tr).val(),
+			original_price = $('[name="price_org[]"]', tr).val(),
             isPercent = $('[name="invoice_product_discount[]"]', tr).val().indexOf('%') > -1,
             percent = $.trim($('[name="invoice_product_discount[]"]', tr).val().replace('%', '')),
 	        subtotal = parseInt(quantity) * parseFloat(price);
@@ -326,21 +339,25 @@ $(document).ready(function() {
         }
 
 	    $('.calculate-sub', tr).val(subtotal.toFixed(2));
+	    $('.calculate-sub-profit', tr).val(subtotal.toFixed(2)-(parseFloat(original_price)*parseInt(quantity)));
 	}
 
 	function calculateTotal() {
 	    
 	    var grandTotal = 0,
+			total_profit = 0,
 	    	disc = 0,
 	    	c_ship = parseInt($('.calculate.shipping').val()) || 0;
 
 	    $('#invoice_table tbody tr').each(function() {
             var c_sbt = $('.calculate-sub', this).val(),
+				profit_sbt = $('.calculate-sub-profit', this).val(),
                 quantity = $('[name="invoice_product_qty[]"]', this).val(),
 				price = $('[name="invoice_product_price[]"]', this).val() || 0,
                 subtotal = parseInt(quantity) * parseFloat(price);
             
             grandTotal += parseFloat(c_sbt);
+			total_profit += parseFloat(profit_sbt);
             disc += subtotal - parseFloat(c_sbt);
 	            
 	    });
@@ -352,7 +369,9 @@ $(document).ready(function() {
 	    	vat = parseInt($('.invoice-vat').attr('data-vat-rate'));
 
 	    $('.invoice-sub-total').text(subT.toFixed(2));
+	    $('.total_profit').text(total_profit.toFixed(2));
 	    $('#invoice_subtotal').val(subT.toFixed(2));
+	    $('#invoice_profit_total').val(total_profit.toFixed(2));
         $('.invoice-discount').text(disc.toFixed(2));
         $('#invoice_discount').val(disc.toFixed(2));
 

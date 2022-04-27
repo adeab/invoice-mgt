@@ -161,6 +161,9 @@ include('functions.php');
 						<th>
 							<h4>Sub Total</h4>
 						</th>
+						<th>
+							<h4>Total Profit</h4>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -175,7 +178,9 @@ include('functions.php');
 						<td class="text-right">
 							<div class="form-group form-group-sm no-margin-bottom input-group">
 								<input type="number" class="form-control invoice_product_qty calculate" name="invoice_product_qty[]" value="1" aria-describedby="basic-addon2">
-								<span class="input-group-addon" id="basic-addon2" name="total_qty[]">of 23</span>
+								<span class="input-group-addon">/
+									<small class="total_qty" id="basic-addon2" name="total_qty[]">NaN</small>
+								</span>
 								
 							</div>
 						</td>
@@ -183,7 +188,7 @@ include('functions.php');
 							<div class="input-group input-group-sm  no-margin-bottom">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
 								<input type="number" class="form-control calculate invoice_product_price required" name="invoice_product_price[]" aria-describedby="sizing-addon1" placeholder="0.00">
-								<input type="number" class="form-control calculate price_org" name="price_org[]" placeholder="original">
+								<input type="hidden" class="form-control calculate price_org" name="price_org[]" placeholder="original">
 							</div>
 						</td>
 						<td class="text-right">
@@ -195,7 +200,12 @@ include('functions.php');
 							<div class="input-group input-group-sm">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
 								<input type="text" class="form-control calculate-sub" name="invoice_product_sub[]" id="invoice_product_sub" value="0.00" aria-describedby="sizing-addon1" disabled>
-								<input type="text" class="form-control calculate-sub-profit" name="sub_profit[]" id="sub_profit" placeholder="Porfit Total" disabled>
+							</div>
+						</td>
+						<td class="text-right">
+							<div class="input-group input-group-sm">
+								<span class="input-group-addon"><?php echo CURRENCY ?></span>
+								<input type="text" class="form-control calculate-sub-profit" name="sub_profit[]" id="sub_profit" value="0.00" aria-describedby="sizing-addon1" disabled>
 							</div>
 						</td>
 					</tr>
@@ -221,6 +231,7 @@ include('functions.php');
 							<input type="hidden" name="invoice_subtotal" id="invoice_subtotal">
 						</div>
 					</div>
+					
 					<div class="row">
 						<div class="col-xs-4 col-xs-offset-5">
 							<strong>Discount:</strong>
@@ -259,6 +270,15 @@ include('functions.php');
 						<div class="col-xs-3">
 							<?php echo CURRENCY ?><span class="invoice-total">0.00</span>
 							<input type="hidden" name="invoice_total" id="invoice_total">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-4 col-xs-offset-5">
+							<strong>Total Profit:</strong>
+						</div>
+						<div class="col-xs-3">
+							<?php echo CURRENCY ?><span class="total_profit">0.00</span>
+							<input type="hidden" name="invoice_profit_total" id="invoice_profit_total">
 						</div>
 					</div>
 				</div>
