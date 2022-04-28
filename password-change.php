@@ -11,8 +11,8 @@ include('header.php');
 	<a href="#" class="close" data-dismiss="alert">&times;</a>
 	<div class="message"></div>
 </div>
-						
-<div class="row">
+<h3>Work in progress...</h3>						
+<!-- <div class="row">
 	<div class="col-xs-12">
 		<div class="panel panel-default">			
 			<div class="panel-body form-group form-group-sm">
@@ -49,7 +49,7 @@ include('header.php');
 			</div>
 		</div>
 	</div>
-<div>
+<div> -->
 
 <?php
 	include('footer.php');

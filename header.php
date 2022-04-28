@@ -107,6 +107,12 @@
           </a>
           
         </li>
+        <li class="treeview">
+          <a href="profit.php"><i class="fa fa-money"></i> <span>Profit</span>
+            
+          </a>
+          
+        </li>
         <!-- Menu 1 -->
          <li class="treeview">
           <a href="#"><i class="fa fa-file-text"></i> <span>Invoices</span>

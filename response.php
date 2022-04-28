@@ -247,13 +247,13 @@ if ($action == 'create_invoice'){
 	$invoice_type = $_POST['invoice_type']; // Invoice type
 	$invoice_status = $_POST['invoice_status']; // Invoice status
 	
+	//get current date
 	$year = date('Y');
 	$month = date('m');
 	$day = date('d');
-
 	$date=date_create($year."-".$month."-".$day);
-	// $date=date_create("2013-03-15");
 	$invoice_created_on= date_format($date,"Y/m/d");
+	
 	// insert invoice into database
 	$query = "INSERT INTO invoices (
 					invoice,
