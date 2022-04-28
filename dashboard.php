@@ -188,7 +188,28 @@ include_once("includes/config.php");
           </div>
         </div>
       </div>
-      
+      <div class="row">
+      <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3><?php 
+                
+                $result = mysqli_query($mysqli, 'SELECT SUM(totalprofit) AS value_sum FROM invoices WHERE status = "paid"'); 
+                $row = mysqli_fetch_assoc($result); 
+                $sum = $row['value_sum'];
+                echo $sum;
+                ?></h3>
+
+              <p>Profit Amount</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-ios-calculator"></i>
+            </div>
+            
+          </div>
+        </div>
+      </div>
      
 
     </section>

@@ -141,7 +141,7 @@ function popProductsList() {
 		//     print '<option value="'.$row['product_price'].'">'.$row["product_name"].' - '.$row["product_desc"].'</option>';
 		// }
 		// echo '</select>';
-		print '<table class="table table-striped table-hover table-bordered" id="data-table"><thead><tr>
+		print '<table class="table table-striped table-hover table-bordered" id="data-table-product"><thead><tr>
 
 				<th>Name</th>
 				<th>SKU</th>

@@ -15,6 +15,7 @@ $(document).ready(function() {
 
 	// Load dataTables
 	$("#data-table").dataTable();
+	$("#data-table-product").dataTable();
 
 	// add product
 	$("#action_add_product").click(function(e) {

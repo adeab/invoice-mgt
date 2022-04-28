@@ -246,7 +246,14 @@ if ($action == 'create_invoice'){
 	$invoice_notes = $_POST['invoice_notes']; // Invoice notes
 	$invoice_type = $_POST['invoice_type']; // Invoice type
 	$invoice_status = $_POST['invoice_status']; // Invoice status
+	
+	$year = date('Y');
+	$month = date('m');
+	$day = date('d');
 
+	$date=date_create($year."-".$month."-".$day);
+	// $date=date_create("2013-03-15");
+	$invoice_created_on= date_format($date,"Y/m/d");
 	// insert invoice into database
 	$query = "INSERT INTO invoices (
 					invoice,
@@ -261,7 +268,8 @@ if ($action == 'create_invoice'){
 					total,
 					notes,
 					invoice_type,
-					status
+					status,
+					created_on
 				) VALUES (
 				  	'".$invoice_number."',
 				  	'".$custom_email."',
@@ -275,7 +283,8 @@ if ($action == 'create_invoice'){
 				  	'".$invoice_total."',
 				  	'".$invoice_notes."',
 				  	'".$invoice_type."',
-				  	'".$invoice_status."'
+				  	'".$invoice_status."',
+					'".$invoice_created_on."'
 			    );
 			";
 	// insert customer details into database
@@ -661,6 +670,7 @@ if($action == 'update_invoice') {
 	$custom_email = $_POST['custom_email']; // invoice custom email body
 	$invoice_date = $_POST['invoice_date']; // invoice date
 	$invoice_due_date = $_POST['invoice_due_date']; // invoice due date
+	$invoice_total_profit = $_POST['invoice_profit_total'];
 	$invoice_subtotal = $_POST['invoice_subtotal']; // invoice sub-total
 	$invoice_shipping = $_POST['invoice_shipping']; // invoice shipping amount
 	$invoice_discount = $_POST['invoice_discount']; // invoice discount
@@ -669,32 +679,43 @@ if($action == 'update_invoice') {
 	$invoice_notes = $_POST['invoice_notes']; // Invoice notes
 	$invoice_type = $_POST['invoice_type']; // Invoice type
 	$invoice_status = $_POST['invoice_status']; // Invoice status
+	$year = date('Y');
+	$month = date('m');
+	$day = date('d');
+
+	$date=date_create($year."-".$month."-".$day);
+	// $date=date_create("2013-03-15");
+	$invoice_created_on= date_format($date,"Y/m/d");
 
 	// insert invoice into database
 	$query .= "INSERT INTO invoices (
 					invoice, 
 					invoice_date, 
 					invoice_due_date, 
-					subtotal, 
+					subtotal,
+					totalprofit, 
 					shipping, 
 					discount, 
 					vat, 
 					total,
 					notes,
 					invoice_type,
-					status
+					status,
+					created_on
 				) VALUES (
 				  	'".$invoice_number."',
 				  	'".$invoice_date."',
 				  	'".$invoice_due_date."',
 				  	'".$invoice_subtotal."',
+					'".$invoice_total_profit."',
 				  	'".$invoice_shipping."',
 				  	'".$invoice_discount."',
 				  	'".$invoice_vat."',
 				  	'".$invoice_total."',
 				  	'".$invoice_notes."',
 				  	'".$invoice_type."',
-				  	'".$invoice_status."'
+				  	'".$invoice_status."',
+					'".$invoice_created_on."'
 			    );
 			";
 	// insert customer details into database
