@@ -208,6 +208,48 @@ if ($action == 'create_customer'){
 	//close database connection
 	$mysqli->close();
 }
+//filter profit range
+if($action == 'filter_profit'){
+	$start_input = $_POST['profit_start'];
+	$end_input = $_POST['profit_end'];
+
+	$date = DateTime::createFromFormat('d/m/Y', $start_input);
+	$start= $date->format('Y-m-d');
+	$date = DateTime::createFromFormat('d/m/Y', $end_input);
+	$end= $date->format('Y-m-d');
+	
+	$query = "SELECT SUM(totalprofit) AS value_sum FROM invoices WHERE STATUS = 'paid' AND created_on BETWEEN '$start' AND '$end'";
+	
+	$results = mysqli_query($mysqli,$query);
+    $count = mysqli_num_rows($results);
+	if($count!="") {
+	
+		$row = $results->fetch_assoc();
+		$sum = $row['value_sum'];
+		echo json_encode(array(
+			'status' => 'Success',
+			'message' => 'Filtered successfully!',
+			'sum' =>$sum?$sum:0
+			
+		));
+	}else {
+		// if unable to excecute
+		echo json_encode(array(
+			'status' => 'Error',
+			'message' => 'There has been an error, please try again.'
+			// debug
+			//'message' => 'There has been an error, please try again.<pre>'.$mysqli->error.'</pre><pre>'.$query.'</pre>'
+		));
+	}
+	
+	// $result = mysqli_query($mysqli, 'SELECT SUM(totalprofit) AS value_sum FROM invoices WHERE status = "paid" AND created_on BETWEEN `$start` AND `$end`'); 
+	// $row = mysqli_fetch_assoc($result); 
+	// $sum = $row['value_sum']?$row['value_sum']:0;
+	// echo "abcd";
+	
+	
+
+}
 
 // Create invoice
 if ($action == 'create_invoice'){
@@ -1025,7 +1067,76 @@ if($action == 'add_product') {
 	//close database connection
 	$mysqli->close();
 }
+// Changing password
+if($action == 'change_password'){
+	//checking the old password
+	$error = '';
+	session_start();
+	$user_name = $_SESSION['login_username'];
+	$pass_encrypt = md5(mysqli_real_escape_string($mysqli,$_POST['password-old']));
+	$query = "SELECT * FROM `users` WHERE username='$user_name' AND `password` = '$pass_encrypt'";
+	
+	$results = mysqli_query($mysqli,$query) or die (mysqli_error());
+    $count = mysqli_num_rows($results);
 
+	if($count!="") {
+		//checking new and confirm is same
+		if($_POST['password']==$_POST['password-new']){
+			
+			$password = $_POST['password']; // password
+
+			//query to update
+			$row = $results->fetch_assoc();
+			$userid = $row['id'];
+			$query = "UPDATE users SET
+					password = ?
+				 WHERE id = ?
+				";
+			
+			/* Prepare statement */
+			$stmt = $mysqli->prepare($query);
+				if($stmt === false) {
+				trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->error, E_USER_ERROR);
+			}
+			$password = md5($password);
+			$stmt->bind_param(
+				'si',
+				$password,$userid
+			);
+			//execute the query
+			if($stmt->execute()){
+				//if saving success
+				echo json_encode(array(
+					'status' => 'Success',
+					'message'=> 'User has been updated successfully!'
+				));
+
+			} else {
+				//if unable to create new record
+				echo json_encode(array(
+					'status' => 'Error',
+					//'message'=> 'There has been an error, please try again.'
+					'message' => 'There has been an error, please try again.<pre>'.$mysqli->error.'</pre><pre>'.$query.'</pre>'
+				));
+			}
+		}
+		else{
+			echo json_encode(array(
+				'status' => 'Error',
+				'message' => 'New Passowrd and Confirm Password Mismatch!'
+			));	
+		}
+		
+		
+    } else {
+    	echo json_encode(array(
+	    	'status' => 'Error',
+	    	'message' => 'Old Password Mismatch!'
+	    ));
+    }
+    $results = mysqli_query($mysqli,$query) or die (mysqli_error());
+    $count = mysqli_num_rows($results);
+}
 // Adding new user
 if($action == 'add_user') {
 

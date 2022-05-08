@@ -40,6 +40,12 @@ $(document).ready(function() {
 	    actionAddUser();
 	});
 
+	// change password
+	$("#action_change_password").click(function(e) {
+		e.preventDefault();
+		actionChangePassword();
+	});
+
 	// update customer
 	$(document).on('click', "#action_update_user", function(e) {
 		e.preventDefault();
@@ -249,6 +255,10 @@ $(document).ready(function() {
 		e.preventDefault();
 	    actionCreateInvoice();
 	});
+	$("#action_filter_profit").click(function(e) {
+		e.preventDefault();
+	    actionFilterProfit();
+	});
 
 	// update invoice
 	$(document).on('click', "#action_edit_invoice", function(e) {
@@ -258,7 +268,7 @@ $(document).ready(function() {
 
 	// enable date pickers for due date and invoice date
 	var dateFormat = $(this).attr('data-vat-rate');
-	$('#invoice_date, #invoice_due_date').datetimepicker({
+	$('#invoice_date, #invoice_due_date, #profit_start, #profit_end').datetimepicker({
 		showClose: false,
 		format: dateFormat
 	});
@@ -441,6 +451,51 @@ $(document).ready(function() {
 		}
 
 	}
+	function actionChangePassword() {
+
+		var errorCounter = validateForm();
+
+		if (errorCounter > 0) {
+		    $("#response").removeClass("alert-success").addClass("alert-warning").fadeIn();
+		    $("#response .message").html("<strong>Error</strong>: It appear's you have forgotten to complete something!");
+		    $("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+		} else {
+
+			$(".required").parent().removeClass("has-error");
+
+			var $btn = $("#action_change_password").button("loading");
+			$.ajax({
+
+				url: 'response.php',
+				type: 'POST',
+				data: $("#change_password").serialize(),
+				dataType: 'json',
+				success: function(data){
+					$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
+					$("#response").removeClass("alert-success").addClass("alert-warning").fadeIn();
+					$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+					$btn.button("reset");
+				},
+				error: function(data){
+					var processed_data = data.responseText.substr(0, data.responseText.indexOf('}')+1);
+					var json_processed_data = JSON.parse(processed_data);
+					if(json_processed_data.status == "Success"){
+						$("#response .message").html("<strong>Success</strong>: Password updated successfully!");
+						$("#response").removeClass("alert-warning").addClass("alert-success").fadeIn();
+						$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+					}
+					else{
+						$("#response .message").html("<strong>" + data.status + "</strong>: " + data.message);
+						$("#response").removeClass("alert-success").addClass("alert-warning").fadeIn();
+						$("html, body").animate({ scrollTop: $('#response').offset().top }, 1000);
+					}
+					$btn.button("reset");
+				}
+
+			});
+		}
+
+	}
 
 	function actionAddProduct() {
 
@@ -518,6 +573,26 @@ $(document).ready(function() {
 			});
 		}
 
+	}
+
+	function actionFilterProfit(){
+		$.ajax({
+
+			url: 'response.php',
+			type: 'POST',
+			data: $("#filter_profit").serialize(),			
+			dataType: 'json',
+			success: function(data){
+				$('#custom_total').html("<h3>"+data.sum+"</h3>");
+			},
+			error: function(data){
+				$('#custom_total').html("<small style='color:white'>Error!</small>");
+				console.log('in error', data);
+				
+			}
+			
+
+		});
 	}
 
 	function actionCreateInvoice(){
@@ -783,8 +858,8 @@ $(document).ready(function() {
 			},
 			error: function(data){
 				
-					var processed_data = data.responseText.substr(0, data.responseText.indexOf('}')+1);
-					var json_processed_data = JSON.parse(processed_data);
+				var processed_data = data.responseText.substr(0, data.responseText.indexOf('}')+1);
+				var json_processed_data = JSON.parse(processed_data);
 				if(json_processed_data.status == "Success"){
 					$("#response .message").html("<strong>Success</strong>: Invoice created successfully!");
 					$("#response").removeClass("alert-warning").addClass("alert-success").fadeIn();
