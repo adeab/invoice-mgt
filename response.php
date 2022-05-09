@@ -393,6 +393,22 @@ if ($action == 'create_invoice'){
 		";
 
 	}
+	// invoice product quantity updates
+	foreach($_POST['invoice_product'] as $key => $value) {
+	    $item_product = $value;
+	    // $item_description = $_POST['invoice_product_desc'][$key];
+	    $item_sku = $_POST['product_sku'][$key];
+	    $item_qty = $_POST['invoice_product_qty'][$key];
+		
+
+
+	    // insert invoice items into database
+		$query .= "UPDATE products SET
+				product_qty = ".$item_rest."
+			WHERE product_sku = ".$item_sku."
+			";
+
+	}
 
 	header('Content-Type: application/json');
 

@@ -182,9 +182,11 @@ $(document).ready(function() {
 			var product_qty = $(this).attr('data-product-qty');
 			var product_price = $(this).attr('data-product-price');
 			var product_original_price = $(this).attr('data-product-original-price');
+			var product_sku = $(this).attr('data-product-sku');
 			$(product).closest('tr').find('.invoice_product').val(product_name);
 			$(product).closest('tr').find('.invoice_product_price').val(product_price);
 			$(product).closest('tr').find('.price_org').val(product_original_price);
+			$(product).closest('tr').find('.product_sku').val(product_sku);
 			
 			$(product).closest('tr').find('.total_qty').text(product_qty?product_qty:"Unlimited");
 
