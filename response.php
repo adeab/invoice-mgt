@@ -373,6 +373,7 @@ if ($action == 'create_invoice'){
 	    $item_price = $_POST['invoice_product_price'][$key];
 	    $item_discount = $_POST['invoice_product_discount'][$key];
 	    $item_subtotal = $_POST['invoice_product_sub'][$key];
+		$item_sku = $_POST['product_sku'][$key];
 
 	    // insert invoice items into database
 		$query .= "INSERT INTO invoice_items (
@@ -381,14 +382,16 @@ if ($action == 'create_invoice'){
 				qty,
 				price,
 				discount,
-				subtotal
+				subtotal,
+				sku
 			) VALUES (
 				'".$invoice_number."',
 				'".$item_product."',
 				'".$item_qty."',
 				'".$item_price."',
 				'".$item_discount."',
-				'".$item_subtotal."'
+				'".$item_subtotal."',
+				'".$item_sku."'
 			);
 		";
 
@@ -400,13 +403,28 @@ if ($action == 'create_invoice'){
 	    $item_sku = $_POST['product_sku'][$key];
 	    $item_qty = $_POST['invoice_product_qty'][$key];
 		
+		//get the product total qty from db
+		$rka_sql = "SELECT * FROM products WHERE product_sku = '" . $item_sku . "'";
+		$rka_result = mysqli_query($mysqli, $rka_sql);
+		// mysqli select query
+		if($rka_result) {
+			while ($row = mysqli_fetch_assoc($rka_result)) {
+				$total_qty = $row['product_qty'];
+			}
 
-
-	    // insert invoice items into database
-		$query .= "UPDATE products SET
+		}
+		if($total_qty)
+		{
+			$item_rest = $total_qty-$item_qty;
+			// update qty in database
+			$query .= "UPDATE products SET
 				product_qty = ".$item_rest."
-			WHERE product_sku = ".$item_sku."
-			";
+				WHERE product_sku = '".$item_sku."'
+				";
+		}
+
+
+	    
 
 	}
 
@@ -418,7 +436,8 @@ if ($action == 'create_invoice'){
 		echo json_encode(array(
 			'status' => 'Success',
 			'message' => 'Invoice has been created successfully!',
-			'number' => $invoice_number
+			'number' => $invoice_number,
+			'query' => $query
 		));
 
 		//Set default date timezone

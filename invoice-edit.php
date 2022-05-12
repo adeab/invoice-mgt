@@ -228,6 +228,9 @@ $mysqli->close();
 						<th>
 							<h4>Sub Total</h4>
 						</th>
+						<th>
+							<h4>Total Profit</h4>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -259,6 +262,25 @@ $mysqli->close();
 							    $item_price = $rows['price'];
 							    $item_discount = $rows['discount'];
 							    $item_subtotal = $rows['subtotal'];
+								$item_sku = $rows['sku'];
+
+								//get the product total qty from db
+								$rka_sql = "SELECT * FROM products WHERE product_sku = '" . $item_sku . "'";
+								$rka_result = mysqli_query($mysqli, $rka_sql);
+								// mysqli select query
+								if($rka_result) {
+									while ($row = mysqli_fetch_assoc($rka_result)) {
+										$total_qty = $row['product_qty'];
+									}
+
+								}
+								if($total_qty)
+								{
+									$item_rest = $total_qty+$item_qty;
+								}
+								else{
+									$item_rest= "Unlimited";
+								}
 					?>
 					<tr>
 						<td>
@@ -269,8 +291,11 @@ $mysqli->close();
 							</div>
 						</td>
 						<td class="text-right">
-							<div class="form-group form-group-sm no-margin-bottom">
+							<div class="form-group form-group-sm no-margin-bottom input-group">
 								<input type="text" class="form-control invoice_product_qty calculate" name="invoice_product_qty[]" value="<?php echo $item_qty; ?>">
+								<span class="input-group-addon">/
+									<small class="total_qty" id="basic-addon2" name="total_qty[]"><?php echo $item_rest; ?></small>
+								</span>
 							</div>
 						</td>
 						<td class="text-right">

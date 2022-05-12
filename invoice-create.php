@@ -189,7 +189,7 @@ include('functions.php');
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
 								<input type="number" class="form-control calculate invoice_product_price required" name="invoice_product_price[]" aria-describedby="sizing-addon1" placeholder="0.00">
 								<input type="hidden" class="form-control calculate price_org" name="price_org[]" placeholder="original">
-								<input type="text" class="form-control product_sku" name="product_sku[]" placeholder="sku">
+								<input type="hidden" class="form-control product_sku" name="product_sku[]" placeholder="sku">
 							</div>
 						</td>
 						<td class="text-right">
