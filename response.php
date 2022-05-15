@@ -374,6 +374,7 @@ if ($action == 'create_invoice'){
 	    $item_discount = $_POST['invoice_product_discount'][$key];
 	    $item_subtotal = $_POST['invoice_product_sub'][$key];
 		$item_sku = $_POST['product_sku'][$key];
+		$item_original_price = $_POST['price_org'][$key];
 
 	    // insert invoice items into database
 		$query .= "INSERT INTO invoice_items (
@@ -381,6 +382,7 @@ if ($action == 'create_invoice'){
 				product,
 				qty,
 				price,
+				original_price,
 				discount,
 				subtotal,
 				sku
@@ -389,6 +391,7 @@ if ($action == 'create_invoice'){
 				'".$item_product."',
 				'".$item_qty."',
 				'".$item_price."',
+				'".$item_original_price."',
 				'".$item_discount."',
 				'".$item_subtotal."',
 				'".$item_sku."'
