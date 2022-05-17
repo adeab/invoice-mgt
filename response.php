@@ -664,27 +664,57 @@ if($action == 'update_product') {
 	$product_desc = $_POST['product_desc']; // product desc
 	$product_price = $_POST['product_price']; // product price
 	$product_qty = $_POST['product_qty']; //product quantity
+	$product_sku = $_POST['product_sku']; 
+	$product_original_price = $_POST['product_price_org']; 
 
-	// the query
-	$query = "UPDATE products SET
-				product_name = ?,
-				product_desc = ?,
-				product_price = ?,
-				product_qty = ?
-			 WHERE product_id = ?
-			";
+	if($product_qty){
+		// the query
+		$query = "UPDATE products SET
+					product_name = ?,
+					product_desc = ?,
+					product_price = ?,
+					product_qty = ?,
+					product_sku = ?,
+					product_original_price = ?
+				WHERE product_id = ?
+				";
 
-	/* Prepare statement */
-	$stmt = $mysqli->prepare($query);
-	if($stmt === false) {
-	  trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->error, E_USER_ERROR);
+		/* Prepare statement */
+		$stmt = $mysqli->prepare($query);
+		if($stmt === false) {
+		trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->error, E_USER_ERROR);
+		}
+
+		/* Bind parameters. TYpes: s = string, i = integer, d = double,  b = blob */
+		$stmt->bind_param(
+			'sssisss',
+			$product_name,$product_desc,$product_price,$product_qty,$product_sku,$product_original_price,$getID
+		);
 	}
+	else{
+			// the query
+			$query = "UPDATE products SET
+						product_name = ?,
+						product_desc = ?,
+						product_price = ?,
+						product_qty = null,
+						product_sku = ?,
+						product_original_price = ?
+					WHERE product_id = ?
+					";
 
-	/* Bind parameters. TYpes: s = string, i = integer, d = double,  b = blob */
-	$stmt->bind_param(
-		'sssis',
-		$product_name,$product_desc,$product_price,$product_qty,$getID
-	);
+			/* Prepare statement */
+			$stmt = $mysqli->prepare($query);
+			if($stmt === false) {
+			trigger_error('Wrong SQL: ' . $query . ' Error: ' . $mysqli->error, E_USER_ERROR);
+			}
+
+			/* Bind parameters. TYpes: s = string, i = integer, d = double,  b = blob */
+			$stmt->bind_param(
+				'ssssss',
+				$product_name,$product_desc,$product_price,$product_sku,$product_original_price,$getID
+			);
+	}
 
 	//execute the query
 	if($stmt->execute()){

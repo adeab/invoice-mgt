@@ -153,7 +153,7 @@ function popProductsList() {
 			  </tr></thead><tbody>';
 
 		while($row = $results->fetch_assoc()) {
-
+			if($row["product_qty"]){
 		    print '
 			    <tr>
 					<td>'.$row["product_name"].'</td>
@@ -164,6 +164,19 @@ function popProductsList() {
 				    <td><a href="#" class="btn btn-primary btn-xs product-select" data-product-name="'.$row['product_name'].'" data-product-sku="'.$row['product_sku'].'" data-product-qty="'.$row['product_qty'].'" data-product-price="'.$row['product_price'].'" data-product-desc="'.$row['product_desc'].'" data-product-original-price="'.$row['product_original_price'].'">Select</a></td>
 			    </tr>
 		    ';
+			}
+			else{
+		    print '
+			    <tr>
+					<td>'.$row["product_name"].'</td>
+				    <td>'.$row["product_sku"].'</td>
+				    <td>'.$row["product_desc"].'</td>
+				    <td>'.$row["product_price"].'</td>
+				    <td>Unlimited</td>
+				    <td><a href="#" class="btn btn-primary btn-xs product-select" data-product-name="'.$row['product_name'].'" data-product-sku="'.$row['product_sku'].'" data-product-qty="'.$row['product_qty'].'" data-product-price="'.$row['product_price'].'" data-product-desc="'.$row['product_desc'].'" data-product-original-price="'.$row['product_original_price'].'">Select</a></td>
+			    </tr>
+		    ';
+			}
 		}
 
 		print '</tr></tbody></table>';
@@ -260,8 +273,10 @@ function getProducts() {
 		print '<table class="table table-striped table-hover table-bordered" id="data-table"><thead><tr>
 
 				<th>Product</th>
+				<th>SKU</th>
 				<th>Description</th>
-				<th>Price</th>
+				<th>Purchase Price</th>
+				<th>Sell Price</th>
 				<th>Qty</th>
 				<th>Action</th>
 
@@ -273,7 +288,9 @@ function getProducts() {
 				print '
 					<tr>
 						<td>'.$row["product_name"].'</td>
+						<td>'.$row["product_sku"].'</td>
 						<td>'.$row["product_desc"].'</td>
+						<td>Tk. '.$row["product_original_price"].'</td>
 						<td>Tk. '.$row["product_price"].'</td>
 				   <td>'.$row["product_qty"].'</td>
 						<td><a href="product-edit.php?id='.$row["product_id"].'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> <a data-product-id="'.$row['product_id'].'" class="btn btn-danger btn-xs delete-product"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
@@ -283,7 +300,9 @@ function getProducts() {
 					print '
 					<tr>
 						<td>'.$row["product_name"].'</td>
+						<td>'.$row["product_sku"].'</td>
 						<td>'.$row["product_desc"].'</td>
+						<td>Tk. '.$row["product_original_price"].'</td>
 						<td>Tk. '.$row["product_price"].'</td>
 						<td>Unlimited</td>
 						<td><a href="product-edit.php?id='.$row["product_id"].'" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a> <a data-product-id="'.$row['product_id'].'" class="btn btn-danger btn-xs delete-product"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>

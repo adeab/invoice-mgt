@@ -26,6 +26,8 @@ if($result) {
 		$product_desc = $row['product_desc']; // product description
 		$product_price = $row['product_price']; // product price
 		$product_qty = $row['product_qty']; //product quantity
+		$product_sku = $row['product_sku'];
+		$product_original_price = $row['product_original_price'];
 	}
 }
 
@@ -52,24 +54,52 @@ $mysqli->close();
 				<form method="post" id="update_product">
 					<input type="hidden" name="action" value="update_product">
 					<input type="hidden" name="id" value="<?php echo $getID; ?>">
-					<div class="row">
-						<div class="col-xs-3">
-							<input type="text" class="form-control required" name="product_name" placeholder="Enter product name" value="<?php echo $product_name; ?>">
+					<div class="form-group row">
+						<label for="product_sku" class="col-sm-2 col-form-label">Product SKU</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control required" value="<?php echo $product_sku; ?>" name="product_sku" id="product_sku" placeholder="Enter Product Code">
 						</div>
-						<div class="col-xs-3">
-							<input type="text" class="form-control required" name="product_desc" placeholder="Enter product description" value="<?php echo $product_desc; ?>">
+					</div>
+					<div class="form-group row">
+						<label for="product_name" class="col-sm-2 col-form-label">Product Name</label>
+						<div class="col-sm-10">
+							<input type="text" value="<?php echo $product_name; ?>" class="form-control required" name="product_name" id="product_name" placeholder="Enter Product Name">
 						</div>
-						<div class="col-xs-3">
-							<input type="number" class="form-control" name="product_qty" placeholder="Enter Product Quantity" value="<?php echo $product_qty; ?>">
-							<small class="note-small">Keep it empty for unlimited!</small>
+					</div>
+					<div class="form-group row">
+						<label for="product_desc" class="col-sm-2 col-form-label">Product Description</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control required" name="product_desc" value="<?php echo $product_desc; ?>" id="product_desc" placeholder="Enter Product Description">
 						</div>
-						<div class="col-xs-3">
+					</div>
+					<div class="form-group row">
+						<label for="product_qty" class="col-sm-2 col-form-label">Product Quantity</label>
+						<div class="col-sm-10">
+							<input type="number" class="form-control" name="product_qty" value="<?php echo $product_qty; ?>" id="product_qty" placeholder="Keep it empty for unlimited">	
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="product_price_org" class="col-sm-2 col-form-label">Product Purchase Price</label>
+						<div class="col-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
-								<input type="text" name="product_price" class="form-control required" placeholder="0.00" aria-describedby="sizing-addon1" value="<?php echo $product_price; ?>">
+								<input type="number" name="product_price_org" id="product_price_org" value="<?php echo $product_original_price; ?>" class="form-control required" placeholder="0.00" aria-describedby="sizing-addon1">
 							</div>
 						</div>
 					</div>
+					<div class="form-group row">
+						<label for="product_price" class="col-sm-2 col-form-label">Product Sell Price</label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<span class="input-group-addon"><?php echo CURRENCY ?></span>
+								<input type="number" name="product_price" id="product_price" class="form-control required" placeholder="0.00" value="<?php echo $product_price; ?>" aria-describedby="sizing-addon1">
+							</div>
+						</div>
+					</div>
+
+
+
+					
 					<div class="row">
 						<div class="col-xs-12 margin-top btn-group">
 							<input type="submit" id="action_update_product" class="btn btn-success float-right" value="Update product" data-loading-text="Updating...">

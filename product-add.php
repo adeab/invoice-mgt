@@ -46,7 +46,7 @@ include('header.php');
 					</div>
 					
 					<div class="form-group row">
-						<label for="product_price_org" class="col-sm-2 col-form-label">Product Original Price</label>
+						<label for="product_price_org" class="col-sm-2 col-form-label">Product Purchase Price</label>
 						<div class="col-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
