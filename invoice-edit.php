@@ -56,6 +56,7 @@ if($result) {
 		$invoice_notes = $row['notes']; // Invoice notes
 		$invoice_type = $row['invoice_type']; // Invoice type
 		$invoice_status = $row['status']; // Invoice status
+		$invoice_profit = $row['totalprofit'];
 	}
 }
 
@@ -263,6 +264,8 @@ $mysqli->close();
 							    $item_discount = $rows['discount'];
 							    $item_subtotal = $rows['subtotal'];
 								$item_sku = $rows['sku'];
+								$item_original_price = $rows['original_price'];
+								$item_invoice_profit = $rows['invoice_profit'];
 
 								//get the product total qty from db
 								$rka_sql = "SELECT * FROM products WHERE product_sku = '" . $item_sku . "'";
@@ -292,7 +295,8 @@ $mysqli->close();
 						</td>
 						<td class="text-right">
 							<div class="form-group form-group-sm no-margin-bottom input-group">
-								<input type="text" class="form-control invoice_product_qty calculate" name="invoice_product_qty[]" value="<?php echo $item_qty; ?>">
+								<input type="number" class="form-control invoice_product_qty calculate" name="invoice_product_qty[]" value="<?php echo $item_qty; ?>">
+								<input type="hidden" value="<?php echo $item_rest; ?>" name="item_rest_qty[]">
 								<span class="input-group-addon">/
 									<small class="total_qty" id="basic-addon2" name="total_qty[]"><?php echo $item_rest; ?></small>
 								</span>
@@ -302,6 +306,8 @@ $mysqli->close();
 							<div class="input-group input-group-sm  no-margin-bottom">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
 								<input type="text" class="form-control calculate invoice_product_price required" name="invoice_product_price[]" aria-describedby="sizing-addon1" placeholder="0.00" value="<?php echo $item_price; ?>">
+								<input type="hidden" class="form-control calculate price_org" value="<?php echo $item_original_price; ?>" name="price_org[]" placeholder="original">
+								<input type="hidden" class="form-control product_sku" value="<?php echo $item_sku; ?>" name="product_sku[]" placeholder="sku">
 							</div>
 						</td>
 						<td class="text-right">
@@ -313,6 +319,12 @@ $mysqli->close();
 							<div class="input-group input-group-sm">
 								<span class="input-group-addon"><?php echo CURRENCY ?></span>
 								<input type="text" class="form-control calculate-sub" name="invoice_product_sub[]" id="invoice_product_sub" aria-describedby="sizing-addon1" value="<?php echo $item_subtotal; ?>" disabled>
+							</div>
+						</td>
+						<td class="text-right">
+							<div class="input-group input-group-sm">
+								<span class="input-group-addon"><?php echo CURRENCY ?></span>
+								<input type="text" class="form-control calculate-sub-profit" name="sub_profit[]" id="sub_profit" value="<?php echo $item_invoice_profit; ?>" aria-describedby="sizing-addon1" disabled>
 							</div>
 						</td>
 					</tr>
@@ -375,6 +387,15 @@ $mysqli->close();
 							<input type="hidden" name="invoice_total" id="invoice_total" value="<?php echo $invoice_total; ?>">
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-xs-4 col-xs-offset-5">
+							<strong>Total Profit:</strong>
+						</div>
+						<div class="col-xs-3">
+							<?php echo CURRENCY ?><span class="total_profit"><?php echo $invoice_profit; ?></span>
+							<input type="hidden" name="invoice_profit_total" value="<?php echo $invoice_total; ?>" id="invoice_profit_total">
+						</div>
+					</div>
 				</div>
 
 			</div>
@@ -396,7 +417,7 @@ $mysqli->close();
 				<?php popProductsList(); ?>
 		      </div>
 		      <div class="modal-footer">
-		        <!-- <button type="button" data-dismiss="modal" class="btn btn-primary" id="selected">Add</button> -->
+		        <button type="button" data-dismiss="modal" class="btn btn-primary" id="selected">Add</button>
 				<button type="button" data-dismiss="modal" class="btn">Cancel</button>
 		      </div>
 		    </div><!-- /.modal-content -->

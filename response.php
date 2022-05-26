@@ -375,6 +375,7 @@ if ($action == 'create_invoice'){
 	    $item_subtotal = $_POST['invoice_product_sub'][$key];
 		$item_sku = $_POST['product_sku'][$key];
 		$item_original_price = $_POST['price_org'][$key];
+		$item_invoice_profit = $_POST['sub_profit'][$key];
 
 	    // insert invoice items into database
 		$query .= "INSERT INTO invoice_items (
@@ -385,7 +386,8 @@ if ($action == 'create_invoice'){
 				original_price,
 				discount,
 				subtotal,
-				sku
+				sku,
+				invoice_profit
 			) VALUES (
 				'".$invoice_number."',
 				'".$item_product."',
@@ -394,7 +396,8 @@ if ($action == 'create_invoice'){
 				'".$item_original_price."',
 				'".$item_discount."',
 				'".$item_subtotal."',
-				'".$item_sku."'
+				'".$item_sku."',
+				'".$item_invoice_profit."'
 			);
 		";
 
@@ -422,7 +425,7 @@ if ($action == 'create_invoice'){
 			// update qty in database
 			$query .= "UPDATE products SET
 				product_qty = ".$item_rest."
-				WHERE product_sku = '".$item_sku."'
+				WHERE product_sku = '".$item_sku."';
 				";
 		}
 
@@ -739,7 +742,7 @@ if($action == 'update_product') {
 }
 
 
-// Adding new product
+// Update invoice
 if($action == 'update_invoice') {
 
 	// output any connection error
@@ -799,7 +802,8 @@ if($action == 'update_invoice') {
 
 	// insert invoice into database
 	$query .= "INSERT INTO invoices (
-					invoice, 
+					invoice,
+					custom_email,
 					invoice_date, 
 					invoice_due_date, 
 					subtotal,
@@ -813,20 +817,21 @@ if($action == 'update_invoice') {
 					status,
 					created_on
 				) VALUES (
-				  	'".$invoice_number."',
-				  	'".$invoice_date."',
-				  	'".$invoice_due_date."',
-				  	'".$invoice_subtotal."',
+					'".$invoice_number."',
+					'".$custom_email."',
+					'".$invoice_date."',
+					'".$invoice_due_date."',
+					'".$invoice_subtotal."',
 					'".$invoice_total_profit."',
-				  	'".$invoice_shipping."',
-				  	'".$invoice_discount."',
-				  	'".$invoice_vat."',
-				  	'".$invoice_total."',
-				  	'".$invoice_notes."',
-				  	'".$invoice_type."',
-				  	'".$invoice_status."',
+					'".$invoice_shipping."',
+					'".$invoice_discount."',
+					'".$invoice_vat."',
+					'".$invoice_total."',
+					'".$invoice_notes."',
+					'".$invoice_type."',
+					'".$invoice_status."',
 					'".$invoice_created_on."'
-			    );
+				);
 			";
 	// insert customer details into database
 	$query .= "INSERT INTO customers (
@@ -872,29 +877,62 @@ if($action == 'update_invoice') {
 	    $item_price = $_POST['invoice_product_price'][$key];
 	    $item_discount = $_POST['invoice_product_discount'][$key];
 	    $item_subtotal = $_POST['invoice_product_sub'][$key];
+		$item_sku = $_POST['product_sku'][$key];
+		$item_original_price = $_POST['price_org'][$key];
+		$item_invoice_profit = $_POST['sub_profit'][$key];
 
 	    // insert invoice items into database
 		$query .= "INSERT INTO invoice_items (
-				invoice,
-				product,
-				qty,
-				price,
-				discount,
-				subtotal
-			) VALUES (
-				'".$invoice_number."',
-				'".$item_product."',
-				'".$item_qty."',
-				'".$item_price."',
-				'".$item_discount."',
-				'".$item_subtotal."'
-			);
-		";
+					invoice,
+					product,
+					qty,
+					price,
+					original_price,
+					discount,
+					subtotal,
+					sku,
+					invoice_profit
+				) VALUES (
+					'".$invoice_number."',
+					'".$item_product."',
+					'".$item_qty."',
+					'".$item_price."',
+					'".$item_original_price."',
+					'".$item_discount."',
+					'".$item_subtotal."',
+					'".$item_sku."',
+					'".$item_invoice_profit."'
+				);
+			";
+
+	}
+
+	// invoice product quantity updates
+	foreach($_POST['invoice_product'] as $key => $value) {
+	    $item_product = $value;
+	    // $item_description = $_POST['invoice_product_desc'][$key];
+	    $item_sku = $_POST['product_sku'][$key];
+	    $item_qty = $_POST['invoice_product_qty'][$key];
+	    $item_total =  $_POST['item_rest_qty'][$key];
+		
+		
+		//get the product total qty from db
+		
+		if($item_total!="Unlimited")
+		{
+			$item_rest = $item_total-$item_qty;
+			// update qty in database
+			$query .= "UPDATE products SET product_qty = ".$item_rest." WHERE product_sku = '".$item_sku."';";
+			
+		}
+
+
+	    
 
 	}
 
 	header('Content-Type: application/json');
-
+	print_r($query);
 	if($mysqli -> multi_query($query)) {
 	    //if saving success
 		echo json_encode(array(
